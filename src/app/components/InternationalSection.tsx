@@ -2,14 +2,12 @@ import { motion } from "motion/react";
 import { Globe } from "lucide-react";
 
 function WorldMapSVG() {
-  // Simplified abstract world map using dots
   return (
     <svg
       viewBox="0 0 1000 500"
       className="absolute inset-0 w-full h-full opacity-[0.04]"
       fill="none"
     >
-      {/* Abstract continent shapes using dot clusters */}
       {/* North America */}
       {[
         [180, 120], [200, 110], [220, 115], [240, 120], [200, 140],
@@ -88,7 +86,7 @@ function WorldMapSVG() {
 
 export function InternationalSection() {
   return (
-    <section className="relative bg-[#F8FAFC] py-24 lg:py-32 overflow-hidden">
+    <section className="relative bg-[#F8FAFC] dark:bg-[#1e293b] py-24 lg:py-32 overflow-hidden">
       <WorldMapSVG />
 
       <div className="relative max-w-3xl mx-auto px-6 text-center">
@@ -97,25 +95,26 @@ export function InternationalSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="transform-gpu backface-hidden"
         >
-          <div className="w-14 h-14 rounded-2xl bg-[#2563EB]/10 flex items-center justify-center mx-auto mb-6">
-            <Globe className="w-7 h-7 text-[#2563EB]" />
+          <div className="w-14 h-14 rounded-2xl bg-[#2563EB]/10 dark:bg-[#2563EB]/15 flex items-center justify-center mx-auto mb-6">
+            <Globe className="w-7 h-7 text-[#2563EB] dark:text-[#3b82f6]" />
           </div>
 
           <span
-            className="text-[#2563EB] uppercase tracking-[0.15em] mb-4 block"
+            className="text-[#2563EB] dark:text-[#3b82f6] uppercase tracking-[0.15em] mb-4 block"
             style={{ fontSize: "0.75rem", fontWeight: 600 }}
           >
             International Focus
           </span>
           <h2
-            className="text-[#0F172A] mb-6"
-            style={{ fontSize: "clamp(1.5rem, 3vw, 2.25rem)", fontWeight: 700, lineHeight: 1.25 }}
+            className="text-[#0F172A] dark:text-white mb-6"
+            style={{ fontSize: "clamp(1.5rem, 3vw, 2.25rem)", fontWeight: 700, lineHeight: 1.25, fontFamily: "'Sora', sans-serif" }}
           >
             Cross-Border Operations, Structured Delivery
           </h2>
           <p
-            className="text-slate-600 max-w-2xl mx-auto"
+            className="text-[#475569] dark:text-[#94a3b8] max-w-2xl mx-auto"
             style={{ fontSize: "1.0625rem", lineHeight: 1.8 }}
           >
             We support cross-border digital operations and structured software

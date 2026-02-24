@@ -10,7 +10,10 @@ import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
-    <div className="w-full min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div
+      className="w-full min-h-screen bg-[#0F172A] dark:bg-[#0F172A] text-white dark:text-white"
+      style={{ fontFamily: "'Inter', sans-serif" }}
+    >
       <Navbar />
       <HeroSection />
       <AboutSection />

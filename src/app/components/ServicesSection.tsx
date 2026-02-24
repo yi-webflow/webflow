@@ -43,24 +43,24 @@ const services = [
 
 export function ServicesSection() {
   return (
-    <section id="services" className="bg-[#0F172A] py-24 lg:py-32">
+    <section id="services" className="bg-[#0F172A] dark:bg-[#0F172A] py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-16 transform-gpu backface-hidden"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <span
-            className="text-[#2563EB] uppercase tracking-[0.15em] mb-4 block"
+            className="text-[#2563EB] dark:text-[#3b82f6] uppercase tracking-[0.15em] mb-4 block"
             style={{ fontSize: "0.75rem", fontWeight: 600 }}
           >
             What We Do
           </span>
           <h2
-            className="text-white"
-            style={{ fontSize: "clamp(1.5rem, 3vw, 2.25rem)", fontWeight: 700, lineHeight: 1.25 }}
+            className="text-white dark:text-white"
+            style={{ fontSize: "clamp(1.5rem, 3vw, 2.25rem)", fontWeight: 700, lineHeight: 1.25, fontFamily: "'Sora', sans-serif" }}
           >
             End-to-End Software Delivery Services
           </h2>
@@ -70,23 +70,34 @@ export function ServicesSection() {
           {services.map((service, i) => (
             <motion.div
               key={service.title}
-              className="group relative bg-[#1e293b]/50 border border-slate-800 rounded-xl p-7 hover:border-[#2563EB]/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#2563EB]/5"
+              className={
+                "group relative bg-[#1e293b]/50 dark:bg-[#1e293b]/50 " +
+                /* Anti-jank: border-[#1e293b] (same width as hover) prevents layout shift */
+                "border border-[#1e293b] dark:border-[#1e293b] " +
+                "rounded-xl p-7 " +
+                /* Hover: only border-color + scale (composite). No shadow animation. */
+                "hover:border-[#2563EB]/40 dark:hover:border-[#2563EB]/40 " +
+                "hover:scale-[1.02] " +
+                "transition-[border-color,transform] duration-300 " +
+                "transform-gpu backface-hidden"
+              }
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <div className="w-11 h-11 rounded-lg bg-[#2563EB]/10 flex items-center justify-center mb-5 group-hover:bg-[#2563EB]/20 transition-colors">
-                <service.icon className="w-5 h-5 text-[#2563EB]" />
+              {/* Icon container — bg-color transition only (composite-safe) */}
+              <div className="w-11 h-11 rounded-lg bg-[#2563EB]/10 dark:bg-[#2563EB]/10 flex items-center justify-center mb-5 group-hover:bg-[#2563EB]/20 dark:group-hover:bg-[#2563EB]/20 transition-[background-color] duration-300 transform-gpu backface-hidden">
+                <service.icon className="w-5 h-5 text-[#2563EB] dark:text-[#3b82f6]" />
               </div>
               <h3
-                className="text-white mb-3"
-                style={{ fontSize: "1.0625rem", fontWeight: 600, lineHeight: 1.4 }}
+                className="text-white dark:text-white mb-3"
+                style={{ fontSize: "1.0625rem", fontWeight: 600, lineHeight: 1.4, fontFamily: "'Sora', sans-serif" }}
               >
                 {service.title}
               </h3>
               <p
-                className="text-slate-400"
+                className="text-[#94a3b8] dark:text-[#94a3b8]"
                 style={{ fontSize: "0.9375rem", lineHeight: 1.7 }}
               >
                 {service.text}

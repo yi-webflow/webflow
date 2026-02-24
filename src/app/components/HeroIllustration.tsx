@@ -2,9 +2,9 @@ import { motion } from "motion/react";
 
 export function HeroIllustration() {
   return (
-    <div className="relative w-full h-full min-h-[400px]">
+    <div className="relative w-full h-full min-h-[400px] transform-gpu backface-hidden">
       <svg viewBox="0 0 500 500" className="w-full h-full" fill="none">
-        {/* Grid dots */}
+        {/* Grid dots — opacity-only animation (composite) */}
         {Array.from({ length: 8 }).map((_, row) =>
           Array.from({ length: 8 }).map((_, col) => (
             <motion.circle
@@ -24,7 +24,7 @@ export function HeroIllustration() {
           ))
         )}
 
-        {/* Connection lines */}
+        {/* Connection lines — opacity + pathLength only */}
         <motion.path
           d="M130 180 L230 130 L330 180 L280 280 L180 280 Z"
           stroke="#2563EB"
@@ -44,7 +44,7 @@ export function HeroIllustration() {
           transition={{ duration: 2, delay: 1 }}
         />
 
-        {/* Main nodes */}
+        {/* Main nodes — scale + opacity only (composite) */}
         {[
           { cx: 230, cy: 130, r: 28, delay: 0.2 },
           { cx: 130, cy: 230, r: 22, delay: 0.4 },
@@ -64,6 +64,7 @@ export function HeroIllustration() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.6, delay: node.delay }}
             />
+            {/* Pulsing ring — scale + opacity only, with will-change for continuous anim */}
             <motion.circle
               cx={node.cx}
               cy={node.cy}
@@ -78,17 +79,17 @@ export function HeroIllustration() {
                 delay: node.delay + 1,
                 repeat: Infinity,
               }}
+              style={{ willChange: "transform, opacity" }}
             />
           </g>
         ))}
 
-        {/* Inner node icons - simplified API/gear shapes */}
+        {/* Inner node icons */}
         <motion.g
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
         >
-          {/* Top node - brackets */}
           <text
             x="230"
             y="135"
@@ -98,7 +99,6 @@ export function HeroIllustration() {
           >
             {"</>"}
           </text>
-          {/* Left node - gear */}
           <text
             x="130"
             y="235"
@@ -108,7 +108,6 @@ export function HeroIllustration() {
           >
             API
           </text>
-          {/* Right node */}
           <text
             x="330"
             y="235"
@@ -120,7 +119,7 @@ export function HeroIllustration() {
           </text>
         </motion.g>
 
-        {/* Flowing data particles */}
+        {/* Flowing data particles — translate + opacity only (composite) */}
         {[0, 1, 2].map((i) => (
           <motion.circle
             key={`particle-${i}`}
@@ -138,10 +137,11 @@ export function HeroIllustration() {
               repeat: Infinity,
               ease: "linear",
             }}
+            style={{ willChange: "transform, opacity" }}
           />
         ))}
 
-        {/* Outer ring */}
+        {/* Outer ring — rotate only (composite), with will-change for continuous */}
         <motion.circle
           cx="230"
           cy="230"
@@ -153,7 +153,7 @@ export function HeroIllustration() {
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "230px 230px" }}
+          style={{ transformOrigin: "230px 230px", willChange: "transform" }}
         />
       </svg>
     </div>

@@ -5,31 +5,31 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#0b1120] border-t border-white/5">
+    <footer className="bg-[#0b1120] dark:bg-[#0b1120] border-t border-white/5 dark:border-white/5">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid md:grid-cols-3 gap-10">
           {/* Company */}
           <div>
             <span
-              className="text-white block mb-3"
-              style={{ fontSize: "1.0625rem", fontWeight: 700 }}
+              className="text-white dark:text-white block mb-3"
+              style={{ fontSize: "1.0625rem", fontWeight: 700, fontFamily: "'Sora', sans-serif" }}
             >
-              Eltanin Solutions<span className="text-[#2563EB]">.</span>
+              Eltanin Solutions<span className="text-[#2563EB] dark:text-[#3b82f6]">.</span>
             </span>
             <p
-              className="text-slate-500"
+              className="text-[#64748b] dark:text-[#64748b]"
               style={{ fontSize: "0.875rem", lineHeight: 1.7 }}
             >
-              B2B Software Resale & Technical Delivery Partner.
+              7/F, MW Tower, 111 Bonham Strand,
               <br />
-              Structured. Reliable. Scalable.
+              Sheung Wan, Hong Kong
             </p>
           </div>
 
           {/* Navigation */}
           <div>
             <span
-              className="text-slate-400 block mb-3"
+              className="text-[#94a3b8] dark:text-[#94a3b8] block mb-3"
               style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em" }}
             >
               NAVIGATION
@@ -44,8 +44,8 @@ export function Footer() {
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="block text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
-                  style={{ fontSize: "0.875rem" }}
+                  className="block text-[#64748b] dark:text-[#64748b] bg-transparent border-0 no-underline hover:text-[#cbd5e1] dark:hover:text-[#cbd5e1] transition-[color] duration-200 cursor-pointer transform-gpu backface-hidden"
+                  style={{ fontSize: "0.875rem", fontWeight: 400 }}
                 >
                   {link.label}
                 </button>
@@ -56,23 +56,23 @@ export function Footer() {
           {/* Contact */}
           <div>
             <span
-              className="text-slate-400 block mb-3"
+              className="text-[#94a3b8] dark:text-[#94a3b8] block mb-3"
               style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em" }}
             >
               CONTACT
             </span>
             <a
               href="mailto:compliance@eltaninsolutions.org"
-              className="text-[#2563EB] hover:text-[#3b82f6] transition-colors"
-              style={{ fontSize: "0.875rem" }}
+              className="text-[#2563EB] dark:text-[#3b82f6] no-underline bg-transparent border-0 hover:text-[#3b82f6] dark:hover:text-[#60a5fa] transition-[color] duration-200 transform-gpu backface-hidden"
+              style={{ fontSize: "0.875rem", fontWeight: 400 }}
             >
               compliance@eltaninsolutions.org
             </a>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-slate-600" style={{ fontSize: "0.8125rem" }}>
+        <div className="mt-12 pt-8 border-t border-white/5 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-[#475569] dark:text-[#475569]" style={{ fontSize: "0.8125rem" }}>
             &copy; {new Date().getFullYear()} Eltanin Solutions Limited. All
             rights reserved.
           </p>
