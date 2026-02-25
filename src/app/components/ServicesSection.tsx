@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 import {
   PackageSearch,
   FileCheck2,
@@ -42,15 +43,18 @@ const services = [
 ];
 
 export function ServicesSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
   return (
     <section id="services" className="bg-[#0F172A] dark:bg-[#0F172A] py-24 lg:py-32">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          className="text-center mb-16 transform-gpu backface-hidden"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+      <div className="max-w-7xl mx-auto px-6" ref={sectionRef}>
+        <div
+          className="text-center mb-16 transition-[opacity,transform] duration-700 transform-gpu"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+          }}
         >
           <span
             className="text-[#2563EB] dark:text-[#3b82f6] uppercase tracking-[0.15em] mb-4 block"
@@ -64,30 +68,28 @@ export function ServicesSection() {
           >
             End-to-End Software Delivery Services
           </h2>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, i) => (
-            <motion.div
+            <div
               key={service.title}
               className={
                 "group relative bg-[#1e293b]/50 dark:bg-[#1e293b]/50 " +
-                /* Anti-jank: border-[#1e293b] (same width as hover) prevents layout shift */
                 "border border-[#1e293b] dark:border-[#1e293b] " +
                 "rounded-xl p-7 " +
-                /* Hover: only border-color + scale (composite). No shadow animation. */
                 "hover:border-[#2563EB]/40 dark:hover:border-[#2563EB]/40 " +
                 "hover:scale-[1.02] " +
-                "transition-[border-color,transform] duration-300 " +
-                "transform-gpu backface-hidden"
+                "transition-[border-color,transform,opacity] duration-500 " +
+                "transform-gpu"
               }
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
+              style={{
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? "translateY(0) scale(1)" : "translateY(20px) scale(1)",
+                transitionDelay: isInView ? `${150 + i * 100}ms` : "0ms",
+              }}
             >
-              {/* Icon container — bg-color transition only (composite-safe) */}
-              <div className="w-11 h-11 rounded-lg bg-[#2563EB]/10 dark:bg-[#2563EB]/10 flex items-center justify-center mb-5 group-hover:bg-[#2563EB]/20 dark:group-hover:bg-[#2563EB]/20 transition-[background-color] duration-300 transform-gpu backface-hidden">
+              <div className="w-11 h-11 rounded-lg bg-[#2563EB]/10 dark:bg-[#2563EB]/10 flex items-center justify-center mb-5 group-hover:bg-[#2563EB]/20 dark:group-hover:bg-[#2563EB]/20 transition-[background-color] duration-300">
                 <service.icon className="w-5 h-5 text-[#2563EB] dark:text-[#3b82f6]" />
               </div>
               <h3
@@ -102,7 +104,7 @@ export function ServicesSection() {
               >
                 {service.text}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

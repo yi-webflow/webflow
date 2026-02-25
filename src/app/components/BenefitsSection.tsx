@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 import { Check } from "lucide-react";
 
 const benefits = [
@@ -11,15 +12,18 @@ const benefits = [
 ];
 
 export function BenefitsSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
   return (
     <section id="benefits" className="bg-white dark:bg-[#0F172A] py-24 lg:py-32">
-      <div className="max-w-3xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="transform-gpu backface-hidden"
+      <div className="max-w-3xl mx-auto px-6 text-center" ref={sectionRef}>
+        <div
+          className="transition-[opacity,transform] duration-700 transform-gpu"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+          }}
         >
           <span
             className="text-[#2563EB] dark:text-[#3b82f6] uppercase tracking-[0.15em] mb-4 block"
@@ -33,17 +37,18 @@ export function BenefitsSection() {
           >
             Built for Reliable Software Delivery
           </h2>
-        </motion.div>
+        </div>
 
         <div className="grid sm:grid-cols-2 gap-5 mb-12 text-left max-w-2xl mx-auto">
           {benefits.map((benefit, i) => (
-            <motion.div
+            <div
               key={benefit}
-              className="flex items-start gap-3 transform-gpu backface-hidden"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="flex items-start gap-3 transition-[opacity,transform] duration-500 transform-gpu"
+              style={{
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? "translateY(0)" : "translateY(10px)",
+                transitionDelay: isInView ? `${200 + i * 80}ms` : "0ms",
+              }}
             >
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#2563EB]/10 dark:bg-[#2563EB]/15 flex items-center justify-center mt-0.5">
                 <Check className="w-3.5 h-3.5 text-[#2563EB] dark:text-[#3b82f6]" />
@@ -54,22 +59,21 @@ export function BenefitsSection() {
               >
                 {benefit}
               </span>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.p
-          className="text-[#64748b] dark:text-[#94a3b8] max-w-xl mx-auto"
-          style={{ fontSize: "1rem", lineHeight: 1.8 }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
+        <p
+          className="text-[#64748b] dark:text-[#94a3b8] max-w-xl mx-auto transition-opacity duration-700"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transitionDelay: isInView ? "700ms" : "0ms",
+          }}
         >
           We combine commercial distribution capability with technical execution
           support — so software delivery becomes predictable, efficient, and
           scalable.
-        </motion.p>
+        </p>
       </div>
     </section>
   );

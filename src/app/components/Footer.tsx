@@ -44,7 +44,7 @@ export function Footer() {
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="block text-[#64748b] dark:text-[#64748b] bg-transparent border-0 no-underline hover:text-[#cbd5e1] dark:hover:text-[#cbd5e1] transition-[color] duration-200 cursor-pointer transform-gpu backface-hidden"
+                  className="block text-[#64748b] dark:text-[#64748b] bg-transparent border-0 no-underline hover:text-[#cbd5e1] dark:hover:text-[#cbd5e1] transition-[color] duration-200 cursor-pointer"
                   style={{ fontSize: "0.875rem", fontWeight: 400 }}
                 >
                   {link.label}
@@ -63,7 +63,7 @@ export function Footer() {
             </span>
             <a
               href="mailto:compliance@eltaninsolutions.org"
-              className="text-[#2563EB] dark:text-[#3b82f6] no-underline bg-transparent border-0 hover:text-[#3b82f6] dark:hover:text-[#60a5fa] transition-[color] duration-200 transform-gpu backface-hidden"
+              className="text-[#2563EB] dark:text-[#3b82f6] no-underline bg-transparent border-0 hover:text-[#3b82f6] dark:hover:text-[#60a5fa] transition-[color] duration-200"
               style={{ fontSize: "0.875rem", fontWeight: 400 }}
             >
               compliance@eltaninsolutions.org

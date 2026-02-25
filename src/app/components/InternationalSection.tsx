@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 import { Globe } from "lucide-react";
 
 function WorldMapSVG() {
@@ -85,17 +86,20 @@ function WorldMapSVG() {
 }
 
 export function InternationalSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
   return (
     <section className="relative bg-[#F8FAFC] dark:bg-[#1e293b] py-24 lg:py-32 overflow-hidden">
       <WorldMapSVG />
 
-      <div className="relative max-w-3xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="transform-gpu backface-hidden"
+      <div className="relative max-w-3xl mx-auto px-6 text-center" ref={sectionRef}>
+        <div
+          className="transition-[opacity,transform] duration-700 transform-gpu"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+          }}
         >
           <div className="w-14 h-14 rounded-2xl bg-[#2563EB]/10 dark:bg-[#2563EB]/15 flex items-center justify-center mx-auto mb-6">
             <Globe className="w-7 h-7 text-[#2563EB] dark:text-[#3b82f6]" />
@@ -121,7 +125,7 @@ export function InternationalSection() {
             deployment across multiple jurisdictions, helping businesses scale
             into new markets with operational clarity and technical consistency.
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

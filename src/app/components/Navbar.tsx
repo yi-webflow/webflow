@@ -25,7 +25,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <a
           href="#"
-          className="text-white dark:text-white no-underline bg-transparent border-0 transform-gpu backface-hidden"
+          className="text-white dark:text-white no-underline bg-transparent border-0"
           style={{ fontWeight: 700, fontSize: "1.125rem", fontFamily: "'Sora', sans-serif" }}
         >
           Eltanin<span className="text-[#2563EB] dark:text-[#2563EB]">.</span>
@@ -37,7 +37,7 @@ export function Navbar() {
             <button
               key={link.href}
               onClick={() => scrollTo(link.href)}
-              className="text-[#94a3b8] dark:text-[#94a3b8] bg-transparent border-0 no-underline hover:text-white dark:hover:text-white transition-[color] duration-200 cursor-pointer transform-gpu backface-hidden"
+              className="text-[#94a3b8] dark:text-[#94a3b8] bg-transparent border-0 no-underline hover:text-white dark:hover:text-white transition-[color] duration-200 cursor-pointer"
               style={{ fontSize: "0.875rem", fontWeight: 400 }}
             >
               {link.label}
@@ -45,7 +45,7 @@ export function Navbar() {
           ))}
           <a
             href="mailto:compliance@eltaninsolutions.org"
-            className="text-white dark:text-white no-underline border border-transparent px-5 py-2 rounded-lg hover:opacity-90 transition-[opacity,transform] duration-200 hover:scale-[1.02] transform-gpu backface-hidden"
+            className="text-white dark:text-white no-underline border border-transparent px-5 py-2 rounded-lg hover:opacity-90 transition-[opacity,transform] duration-200 hover:scale-[1.02] transform-gpu"
             style={{ fontSize: "0.875rem", fontWeight: 500, background: CTA_GRADIENT }}
           >
             Contact Us
@@ -54,14 +54,14 @@ export function Navbar() {
 
         {/* Mobile Burger */}
         <button
-          className="md:hidden text-white dark:text-white bg-transparent border-0 cursor-pointer transform-gpu backface-hidden"
+          className="md:hidden text-white dark:text-white bg-transparent border-0 cursor-pointer"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Menu — animate with opacity + translateY only (composite props) */}
+      {/* Mobile Menu — opacity + translateY only */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -69,14 +69,14 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden bg-[#0F172A] dark:bg-[#0F172A] border-b border-white/5 dark:border-white/5 overflow-hidden transform-gpu backface-hidden will-change-transform"
+            className="md:hidden bg-[#0F172A] dark:bg-[#0F172A] border-b border-white/5 dark:border-white/5 overflow-hidden transform-gpu"
           >
             <div className="px-6 py-4 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <button
                   key={link.href}
                   onClick={() => scrollTo(link.href)}
-                  className="text-[#94a3b8] dark:text-[#94a3b8] bg-transparent border-0 no-underline hover:text-white dark:hover:text-white transition-[color] duration-200 text-left cursor-pointer transform-gpu backface-hidden"
+                  className="text-[#94a3b8] dark:text-[#94a3b8] bg-transparent border-0 no-underline hover:text-white dark:hover:text-white transition-[color] duration-200 text-left cursor-pointer"
                   style={{ fontSize: "0.875rem", fontWeight: 400 }}
                 >
                   {link.label}
@@ -84,7 +84,7 @@ export function Navbar() {
               ))}
               <a
                 href="mailto:compliance@eltaninsolutions.org"
-                className="text-white dark:text-white no-underline border border-transparent px-5 py-2.5 rounded-lg text-center hover:opacity-90 transition-[opacity] duration-200 transform-gpu backface-hidden"
+                className="text-white dark:text-white no-underline border border-transparent px-5 py-2.5 rounded-lg text-center hover:opacity-90 transition-[opacity] duration-200"
                 style={{ fontSize: "0.875rem", fontWeight: 500, background: CTA_GRADIENT }}
               >
                 Contact Us

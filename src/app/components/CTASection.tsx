@@ -1,8 +1,12 @@
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 
 const CTA_GRADIENT = "linear-gradient(90deg, #707CFF 0%, #002BFF 99.99%)";
 
 export function CTASection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
   return (
     <section className="relative bg-[#0F172A] dark:bg-[#0F172A] py-24 lg:py-32 overflow-hidden">
       {/* Background glow — static, no animation */}
@@ -10,13 +14,13 @@ export function CTASection() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#2563EB]/8 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative max-w-3xl mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="transform-gpu backface-hidden"
+      <div className="relative max-w-3xl mx-auto px-6 text-center" ref={sectionRef}>
+        <div
+          className="transition-[opacity,transform] duration-700 transform-gpu"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+          }}
         >
           <h2
             className="text-white dark:text-white mb-6"
@@ -42,15 +46,14 @@ export function CTASection() {
             If you need a partner who understands both distribution and technical
             execution — we are ready to collaborate.
           </p>
-          {/* CTA — gradient background, hover via opacity + scale (composite only) */}
           <a
             href="mailto:compliance@eltaninsolutions.org"
-            className="inline-flex items-center text-white dark:text-white no-underline border border-transparent px-8 py-4 rounded-lg hover:opacity-90 hover:scale-[1.03] transition-[opacity,transform] duration-200 transform-gpu backface-hidden"
+            className="inline-flex items-center text-white dark:text-white no-underline border border-transparent px-8 py-4 rounded-lg hover:opacity-90 hover:scale-[1.03] transition-[opacity,transform] duration-200 transform-gpu"
             style={{ fontSize: "1rem", fontWeight: 500, background: CTA_GRADIENT }}
           >
             Contact Us
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -24,7 +24,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="transform-gpu backface-hidden"
+            className="transform-gpu"
           >
             <motion.span
               className="inline-block text-[#2563EB] dark:text-[#2563EB] tracking-[0.2em] uppercase mb-6"
@@ -67,7 +67,7 @@ export function HeroSection() {
               {/* Primary CTA — gradient background, no shadow animation */}
               <a
                 href="mailto:compliance@eltaninsolutions.org"
-                className="inline-flex items-center text-white dark:text-white no-underline border border-transparent px-7 py-3.5 rounded-lg hover:opacity-90 hover:scale-[1.02] transition-[opacity,transform] duration-200 transform-gpu backface-hidden"
+                className="inline-flex items-center text-white dark:text-white no-underline border border-transparent px-7 py-3.5 rounded-lg hover:opacity-90 hover:scale-[1.02] transition-[opacity,transform] duration-200 transform-gpu"
                 style={{ fontSize: "0.9375rem", fontWeight: 500, background: CTA_GRADIENT }}
               >
                 Contact Us
@@ -75,7 +75,7 @@ export function HeroSection() {
               {/* Secondary CTA — border-transparent base prevents jank, explicit colors */}
               <button
                 onClick={scrollToServices}
-                className="inline-flex items-center bg-transparent dark:bg-transparent border border-[#334155] dark:border-[#334155] text-[#cbd5e1] dark:text-[#cbd5e1] no-underline px-7 py-3.5 rounded-lg hover:border-[#64748b] dark:hover:border-[#64748b] hover:text-white dark:hover:text-white hover:scale-[1.02] transition-[border-color,color,transform] duration-200 cursor-pointer transform-gpu backface-hidden"
+                className="inline-flex items-center bg-transparent dark:bg-transparent border border-[#334155] dark:border-[#334155] text-[#cbd5e1] dark:text-[#cbd5e1] no-underline px-7 py-3.5 rounded-lg hover:border-[#64748b] dark:hover:border-[#64748b] hover:text-white dark:hover:text-white hover:scale-[1.02] transition-[border-color,color,transform] duration-200 cursor-pointer transform-gpu"
                 style={{ fontSize: "0.9375rem", fontWeight: 500 }}
               >
                 Explore Our Services
@@ -85,9 +85,9 @@ export function HeroSection() {
 
           {/* Right: Illustration — opacity + scale only */}
           <motion.div
-            className="hidden lg:block transform-gpu backface-hidden"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
+            className="hidden lg:block transform-gpu"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
             <HeroIllustration />

@@ -1,23 +1,28 @@
 import { motion } from "motion/react";
 
+/**
+ * Safari-safe AboutSection
+ *
+ * WorkflowIllustration is now fully static (no per-element motion.g or pathLength).
+ * The whole illustration fades in via a single opacity animation on the wrapper.
+ * This avoids:
+ * - motion.g y-transforms on SVG <g> (broken transform-origin in Safari)
+ * - pathLength animation (buggy in WebKit)
+ * - Multiple whileInView observers inside SVG
+ */
+
 function WorkflowIllustration() {
   return (
     <svg viewBox="0 0 400 400" className="w-full max-w-md mx-auto" fill="none">
-      {/* Flow blocks — opacity + translateY only (composite) */}
+      {/* Flow blocks — fully static */}
       {[
-        { x: 60, y: 80, w: 120, h: 50, label: "Source", delay: 0.2 },
-        { x: 220, y: 80, w: 120, h: 50, label: "License", delay: 0.4 },
-        { x: 140, y: 180, w: 120, h: 50, label: "Integrate", delay: 0.6 },
-        { x: 60, y: 280, w: 120, h: 50, label: "Deploy", delay: 0.8 },
-        { x: 220, y: 280, w: 120, h: 50, label: "Support", delay: 1.0 },
+        { x: 60, y: 80, w: 120, h: 50, label: "Source" },
+        { x: 220, y: 80, w: 120, h: 50, label: "License" },
+        { x: 140, y: 180, w: 120, h: 50, label: "Integrate" },
+        { x: 60, y: 280, w: 120, h: 50, label: "Deploy" },
+        { x: 220, y: 280, w: 120, h: 50, label: "Support" },
       ].map((block, i) => (
-        <motion.g
-          key={i}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: block.delay, duration: 0.5 }}
-        >
+        <g key={i}>
           <rect
             x={block.x}
             y={block.y}
@@ -37,31 +42,28 @@ function WorkflowIllustration() {
           >
             {block.label}
           </text>
-        </motion.g>
+        </g>
       ))}
 
-      {/* Connecting arrows — pathLength + opacity only */}
+      {/* Connecting arrows — static (no pathLength, which is broken in Safari) */}
       {[
         "M180 105 L220 105",
         "M180 105 L200 180",
         "M200 230 L120 280",
         "M200 230 L280 280",
       ].map((d, i) => (
-        <motion.path
+        <path
           key={`arrow-${i}`}
           d={d}
           stroke="#2563EB"
           strokeWidth="1"
           strokeDasharray="4 4"
-          initial={{ pathLength: 0, opacity: 0 }}
-          whileInView={{ pathLength: 1, opacity: 0.5 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 + i * 0.3, duration: 0.8 }}
+          opacity="0.5"
         />
       ))}
 
-      {/* Decorative circles — opacity only */}
-      <motion.circle
+      {/* Decorative circle — static */}
+      <circle
         cx="200"
         cy="200"
         r="160"
@@ -69,10 +71,7 @@ function WorkflowIllustration() {
         strokeWidth="0.5"
         strokeDasharray="2 8"
         fill="none"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.4 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1.2 }}
+        opacity="0.4"
       />
     </svg>
   );
@@ -83,13 +82,13 @@ export function AboutSection() {
     <section id="about" className="bg-[#F8FAFC] dark:bg-[#1e293b] py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left: Text — translateX + opacity only */}
+          {/* Left: Text — single wrapper animation */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="transform-gpu backface-hidden"
+            className="transform-gpu"
           >
             <span
               className="text-[#2563EB] dark:text-[#3b82f6] uppercase tracking-[0.15em] mb-4 block"
@@ -140,13 +139,13 @@ export function AboutSection() {
             </div>
           </motion.div>
 
-          {/* Right: Illustration — translateX + opacity only */}
+          {/* Right: Illustration — single wrapper fade, no inner SVG animation */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="bg-[#0F172A] dark:bg-[#0F172A] rounded-2xl p-8 transform-gpu backface-hidden"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="bg-[#0F172A] dark:bg-[#0F172A] rounded-2xl p-8"
           >
             <WorkflowIllustration />
           </motion.div>

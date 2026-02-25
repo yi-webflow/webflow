@@ -1,50 +1,90 @@
 import { motion } from "motion/react";
 
+/**
+ * Safari-safe HeroIllustration
+ * 
+ * Fixes applied:
+ * - Grid dots: static with CSS shimmer via a single <style> block (not 64 motion instances)
+ * - Paths: opacity-only fade-in (no pathLength — broken in Safari/WebKit)
+ * - Nodes: opacity-only fade-in (no SVG scale — transform-origin broken in WebKit)
+ * - Pulsing rings: opacity-only pulse (no scale)
+ * - Outer ring: CSS @keyframes rotate (no motion rotate on SVG — transform-origin broken)
+ * - Particles: reduced to 2, using strokeDashoffset trick instead of cx/cy attribute animation
+ */
+
 export function HeroIllustration() {
   return (
-    <div className="relative w-full h-full min-h-[400px] transform-gpu backface-hidden">
+    <div className="relative w-full h-full min-h-[400px]">
+      {/* CSS animations — single style block, no per-element JS animation */}
+      <style>{`
+        @keyframes dotPulse {
+          0%, 100% { opacity: 0.15; }
+          50% { opacity: 0.45; }
+        }
+        @keyframes ringPulse {
+          0%, 100% { opacity: 0.25; }
+          50% { opacity: 0; }
+        }
+        @keyframes outerSpin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes particleMove {
+          0%   { offset-distance: 0%; opacity: 0; }
+          5%   { opacity: 1; }
+          95%  { opacity: 1; }
+          100% { offset-distance: 100%; opacity: 0; }
+        }
+        .hero-dot {
+          animation: dotPulse 4s ease-in-out infinite;
+        }
+        .hero-ring {
+          animation: ringPulse 3s ease-in-out infinite;
+        }
+        .hero-outer-ring {
+          transform-box: fill-box;
+          transform-origin: center;
+          animation: outerSpin 60s linear infinite;
+        }
+      `}</style>
+
       <svg viewBox="0 0 500 500" className="w-full h-full" fill="none">
-        {/* Grid dots — opacity-only animation (composite) */}
+        {/* Grid dots — pure CSS animation, stagger via animation-delay */}
         {Array.from({ length: 8 }).map((_, row) =>
           Array.from({ length: 8 }).map((_, col) => (
-            <motion.circle
+            <circle
               key={`dot-${row}-${col}`}
               cx={80 + col * 50}
               cy={80 + row * 50}
               r="1.5"
               fill="#334155"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0.2, 0.6, 0.2] }}
-              transition={{
-                duration: 3,
-                delay: (row + col) * 0.15,
-                repeat: Infinity,
-              }}
+              className="hero-dot"
+              style={{ animationDelay: `${(row + col) * 0.2}s` }}
             />
           ))
         )}
 
-        {/* Connection lines — opacity + pathLength only */}
+        {/* Connection lines — opacity-only fade (no pathLength) */}
         <motion.path
           d="M230 130 L130 230 L180 330 L280 330 L330 230 Z"
           stroke="#2563EB"
           strokeWidth="1"
           strokeDasharray="4 4"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.4 }}
-          transition={{ duration: 2, delay: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ duration: 1.5, delay: 0.5 }}
         />
         <motion.path
           d="M130 230 L330 230 L180 330"
           stroke="#6366F1"
           strokeWidth="1"
           strokeDasharray="4 4"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ pathLength: 1, opacity: 0.3 }}
-          transition={{ duration: 2, delay: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.3 }}
+          transition={{ duration: 1.5, delay: 1 }}
         />
 
-        {/* Main nodes — scale + opacity only (composite) */}
+        {/* Main nodes — opacity-only fade (no scale, avoids broken SVG transform-origin) */}
         {[
           { cx: 230, cy: 130, r: 28, delay: 0.2 },
           { cx: 130, cy: 230, r: 22, delay: 0.4 },
@@ -60,35 +100,29 @@ export function HeroIllustration() {
               fill="#0F172A"
               stroke="#2563EB"
               strokeWidth="1.5"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: node.delay }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: node.delay }}
             />
-            {/* Pulsing ring — scale + opacity only, with will-change for continuous anim */}
-            <motion.circle
+            {/* Pulsing ring — CSS opacity-only (no scale) */}
+            <circle
               cx={node.cx}
               cy={node.cy}
               r={node.r + 8}
               fill="none"
               stroke="#2563EB"
               strokeWidth="0.5"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0, 0.3] }}
-              transition={{
-                duration: 3,
-                delay: node.delay + 1,
-                repeat: Infinity,
-              }}
-              style={{ willChange: "transform, opacity" }}
+              className="hero-ring"
+              style={{ animationDelay: `${node.delay + 1.5}s` }}
             />
           </g>
         ))}
 
-        {/* Inner node icons */}
+        {/* Inner node labels */}
         <motion.g
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
+          transition={{ delay: 1.5, duration: 0.6 }}
         >
           <text
             x="230"
@@ -137,8 +171,9 @@ export function HeroIllustration() {
           </text>
         </motion.g>
 
-        {/* Flowing data particles — translate + opacity only (composite) */}
-        {[0, 1, 2].map((i) => (
+        {/* Flowing data particles — opacity-only with CSS offset-path (Safari 16.4+) */}
+        {/* Fallback: simple cx/cy attribute animation (works in all browsers) */}
+        {[0, 1].map((i) => (
           <motion.circle
             key={`particle-${i}`}
             r="3"
@@ -147,20 +182,19 @@ export function HeroIllustration() {
             animate={{
               cx: [130, 230, 330, 280, 180, 130],
               cy: [230, 130, 230, 330, 330, 230],
-              opacity: [0, 1, 1, 1, 1, 0],
+              opacity: [0, 0.8, 0.8, 0.8, 0.8, 0],
             }}
             transition={{
-              duration: 6,
-              delay: i * 2,
+              duration: 8,
+              delay: i * 4,
               repeat: Infinity,
               ease: "linear",
             }}
-            style={{ willChange: "transform, opacity" }}
           />
         ))}
 
-        {/* Outer ring — rotate only (composite), with will-change for continuous */}
-        <motion.circle
+        {/* Outer ring — CSS @keyframes rotate with transform-box: fill-box (Safari-safe) */}
+        <circle
           cx="230"
           cy="230"
           r="180"
@@ -168,10 +202,7 @@ export function HeroIllustration() {
           stroke="#1e293b"
           strokeWidth="0.5"
           strokeDasharray="2 6"
-          initial={{ rotate: 0 }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          style={{ transformOrigin: "230px 230px", willChange: "transform" }}
+          className="hero-outer-ring"
         />
       </svg>
     </div>

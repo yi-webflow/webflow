@@ -1,4 +1,5 @@
-import { motion } from "motion/react";
+import { useRef } from "react";
+import { useInView } from "motion/react";
 import { SearchIcon } from "./icons/SearchIcon";
 import { PeopleIcon } from "./icons/PeopleIcon";
 import { RocketIcon } from "./icons/RocketIcon";
@@ -32,15 +33,19 @@ const steps = [
 ];
 
 export function ProcessSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
+
   return (
     <section id="process" className="bg-[#F8FAFC] dark:bg-[#1e293b] py-24 lg:py-32">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          className="text-center mb-16 transform-gpu backface-hidden"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+      <div className="max-w-7xl mx-auto px-6" ref={sectionRef}>
+        {/* Section heading */}
+        <div
+          className="text-center mb-16 transition-[opacity,transform] duration-700 transform-gpu"
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? "translateY(0)" : "translateY(20px)",
+          }}
         >
           <span
             className="text-[#2563EB] dark:text-[#3b82f6] uppercase tracking-[0.15em] mb-4 block"
@@ -54,33 +59,32 @@ export function ProcessSection() {
           >
             A Structured Approach to Delivery
           </h2>
-        </motion.div>
+        </div>
 
         {/* Desktop: Horizontal Timeline */}
         <div className="hidden lg:block">
           <div className="relative">
             {/* Timeline base line — static */}
             <div className="absolute top-12 left-0 right-0 h-px bg-[#e2e8f0] dark:bg-[#334155]" />
-            {/* Animated timeline — uses scaleX (composite) instead of width */}
-            <motion.div
-              className="absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-[#2563EB] to-[#6366F1] origin-left transform-gpu backface-hidden"
-              initial={{ scaleX: 0, opacity: 0 }}
-              whileInView={{ scaleX: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, delay: 0.3 }}
+            {/* Animated timeline — CSS scaleX transition */}
+            <div
+              className="absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-[#2563EB] to-[#6366F1] origin-left transition-transform duration-[1500ms] ease-out transform-gpu"
+              style={{
+                transform: isInView ? "scaleX(1)" : "scaleX(0)",
+              }}
             />
 
             <div className="grid grid-cols-4 gap-8">
               {steps.map((step, i) => (
-                <motion.div
+                <div
                   key={step.number}
-                  className="relative text-center transform-gpu backface-hidden"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.2 }}
+                  className="relative text-center transition-[opacity,transform] duration-500 transform-gpu"
+                  style={{
+                    opacity: isInView ? 1 : 0,
+                    transform: isInView ? "translateY(0)" : "translateY(20px)",
+                    transitionDelay: isInView ? `${300 + i * 200}ms` : "0ms",
+                  }}
                 >
-                  {/* Node — static shadow only (no animated shadow) */}
                   <div className="relative mx-auto w-24 h-24 mb-6">
                     <div className="absolute inset-0 rounded-full bg-white dark:bg-[#0F172A] border-2 border-[#e2e8f0] dark:border-[#334155] flex items-center justify-center">
                       <step.icon className="w-7 h-7 text-[#2563EB] dark:text-[#3b82f6]" />
@@ -105,7 +109,7 @@ export function ProcessSection() {
                   >
                     {step.text}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -114,13 +118,14 @@ export function ProcessSection() {
         {/* Mobile: Vertical Steps */}
         <div className="lg:hidden space-y-8">
           {steps.map((step, i) => (
-            <motion.div
+            <div
               key={step.number}
-              className="flex gap-5 transform-gpu backface-hidden"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
+              className="flex gap-5 transition-[opacity,transform] duration-500 transform-gpu"
+              style={{
+                opacity: isInView ? 1 : 0,
+                transform: isInView ? "translateX(0)" : "translateX(-20px)",
+                transitionDelay: isInView ? `${i * 150}ms` : "0ms",
+              }}
             >
               <div className="flex-shrink-0">
                 <div className="w-14 h-14 rounded-full bg-white dark:bg-[#0F172A] border-2 border-[#e2e8f0] dark:border-[#334155] flex items-center justify-center">
@@ -150,7 +155,7 @@ export function ProcessSection() {
                   {step.text}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
