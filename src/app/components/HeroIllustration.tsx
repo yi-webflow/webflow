@@ -26,7 +26,7 @@ export function HeroIllustration() {
 
         {/* Connection lines — opacity + pathLength only */}
         <motion.path
-          d="M130 180 L230 130 L330 180 L280 280 L180 280 Z"
+          d="M230 130 L130 230 L180 330 L280 330 L330 230 Z"
           stroke="#2563EB"
           strokeWidth="1"
           strokeDasharray="4 4"
@@ -35,7 +35,7 @@ export function HeroIllustration() {
           transition={{ duration: 2, delay: 0.5 }}
         />
         <motion.path
-          d="M180 130 L330 230 L230 330"
+          d="M130 230 L330 230 L180 330"
           stroke="#6366F1"
           strokeWidth="1"
           strokeDasharray="4 4"
@@ -49,8 +49,8 @@ export function HeroIllustration() {
           { cx: 230, cy: 130, r: 28, delay: 0.2 },
           { cx: 130, cy: 230, r: 22, delay: 0.4 },
           { cx: 330, cy: 230, r: 22, delay: 0.6 },
-          { cx: 180, cy: 330, r: 18, delay: 0.8 },
-          { cx: 280, cy: 330, r: 18, delay: 1.0 },
+          { cx: 180, cy: 330, r: 22, delay: 0.8 },
+          { cx: 280, cy: 330, r: 22, delay: 1.0 },
         ].map((node, i) => (
           <g key={`node-${i}`}>
             <motion.circle
@@ -116,6 +116,24 @@ export function HeroIllustration() {
             style={{ fontSize: "12px", fontFamily: "monospace" }}
           >
             SYS
+          </text>
+          <text
+            x="180"
+            y="335"
+            textAnchor="middle"
+            fill="#6366F1"
+            style={{ fontSize: "12px", fontFamily: "monospace" }}
+          >
+            OPS
+          </text>
+          <text
+            x="280"
+            y="335"
+            textAnchor="middle"
+            fill="#6366F1"
+            style={{ fontSize: "12px", fontFamily: "monospace" }}
+          >
+            SLA
           </text>
         </motion.g>
 

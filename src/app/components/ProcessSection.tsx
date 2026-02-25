@@ -1,27 +1,30 @@
 import { motion } from "motion/react";
-import { Search, GitMerge, Rocket, Shield } from "lucide-react";
+import { SearchIcon } from "./icons/SearchIcon";
+import { PeopleIcon } from "./icons/PeopleIcon";
+import { RocketIcon } from "./icons/RocketIcon";
+import { HeadsetIcon } from "./icons/HeadsetIcon";
 
 const steps = [
   {
-    icon: Search,
+    icon: SearchIcon,
     number: "01",
     title: "Assess & Structure",
     text: "We evaluate requirements and define a clear commercial and technical framework.",
   },
   {
-    icon: GitMerge,
+    icon: PeopleIcon,
     number: "02",
     title: "Align & Coordinate",
     text: "We synchronise stakeholders, documentation, and timelines.",
   },
   {
-    icon: Rocket,
+    icon: RocketIcon,
     number: "03",
     title: "Integrate & Deploy",
     text: "We support structured technical implementation and onboarding.",
   },
   {
-    icon: Shield,
+    icon: HeadsetIcon,
     number: "04",
     title: "Support & Optimise",
     text: "We remain engaged to ensure stability, performance, and scalability.",
